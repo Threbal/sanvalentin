@@ -1,163 +1,65 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<title>Fondo Videos</title>
-<link rel="stylesheet" href="CSS/si.css">
-</head>
-
-<body>
-
-<video id="videoA" class="videoFondo" autoplay muted></video>
-<video id="videoB" class="videoFondo" muted></video>
-
-
-<div class="contenido">
-    <div class="carta">
-        <div id="mensaje"></div>
-    </div>
-</div>
-
-
-
-<audio id="musica" autoplay loop>
-    <source src="musica.mp3" type="audio/mpeg">
-</audio>
-
-<script>
-
-    const musica = document.getElementById("musica");
-
-    
-    musica.volume = 0;
-    musica.play();
-
-    let volumen = 0;
-    const fade = setInterval(() => {
-        if (volumen < 0.35) {
-            volumen += 0.01;
-            musica.volume = volumen;
-        } else {
-            clearInterval(fade);
-        }
-    }, 200);
-
-    window.addEventListener("click", () => {
-    musica.play();
-}, { once: true });
-
-
-    const totalVideos = 15;
-    let indice = 1;
-
-    const videoA = document.getElementById("videoA");
-    const videoB = document.getElementById("videoB");
-
-    let activo = videoA;
-    let oculto = videoB;
-
-    function cargarVideo(video, numero) {
-        video.src = "video" + numero + ".mp4";
-        video.load();
+    body {
+        margin: 0;
+        overflow: hidden;
     }
 
-    function cambiarVideo() {
-        indice++;
-        if (indice > totalVideos) {
-            indice = 1;
-        }
+.videoFondo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    transition: opacity 2s ease-in-out;
+}
 
-        cargarVideo(oculto, indice);
+#videoA {
+    opacity: 1;
+    z-index: -2;
+}
 
-        oculto.onloadeddata = () => {
-            oculto.play();
-
-            oculto.style.opacity = 1;
-            activo.style.opacity = 0;
-
-            let temp = activo;
-            activo = oculto;
-            oculto = temp;
-
-            activo.onended = cambiarVideo;
-        };
-    }
-
-    // iniciar
-    cargarVideo(activo, indice);
-    activo.play();
-    activo.onended = cambiarVideo;
+#videoB {
+    opacity: 0;
+    z-index: -1;
+}
 
 
+    .contenido {
+    position: relative;
+    z-index: 1;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-    const mensaje = document.getElementById("mensaje");
+.carta {
+    background: rgba(80, 80, 80, 0.6);
+    padding: 40px;
+    border-radius: 20px;
+    max-width: 750px;
+    width: 85%;
+    height: 70vh; /* altura fija */
+    overflow-y: auto; /* activa scroll vertical */
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+}
 
-    function mostrarMensajeFinal() {
+.carta::-webkit-scrollbar {
+    width: 8px;
+}
 
-        const texto = `
-    Muchas gracias por aceptar ser mi San Valentín.
-    Desde que llegaste a mi vida todo se volvió más vivo que nunca.
-    Aún recuerdo cuando empezamos a conocernos,
-    y cuánto tiempo ha pasado desde entonces.
-
-    Hemos vivido tantas cosas juntos
-    que ya no imagino una vida sin ti.
-    Estos años a tu lado han sido especiales,
-    y quiero seguir viviendo muchos más contigo.
-
-    Quiero estar a tu lado en persona,
-    vivir cada experiencia que el mundo nos regale,
-    experimentar todo contigo,
-    y construir un futuro juntos.
-
-    Desde la primera vez que te vi en cámara
-    abrazando tu peluche de estrella,
-    supe que eras alguien especial para mí.
-
-    Amo tu risa que me enamora,
-    tus sonidos que me hacen reír,
-    tus momentos de locura que tanto me encantan,
-    y cada detalle que te hace ser tú.
-
-    Sé que a veces dudas,
-    sé que a veces tienes miedo,
-    pero quiero que recuerdes
-    que siempre estaré contigo.
-
-    Nuestra vida siempre sera una lucha y siempre tendremos problema,
-    habrá obstáculos y momentos difíciles,
-    pero juntos veremos las cosas desde otro ángulo,
-    y seguiremos avanzando.
-
-    Porque encontraremos nuestro camino,
-    porque construiremos nuestro futuro,
-    y porque todo lo que necesitamos
-    es avanzar… juntos ❤️. 
-
-        `;
-
-        let i = 0;
-        const velocidad = 50;
-
-        mensaje.innerHTML = ""; // limpia antes de escribir
-
-        function escribir() {
-            if (i < texto.length) {
-                mensaje.innerHTML += texto.charAt(i);
-                i++;
-                setTimeout(escribir, velocidad);
-            }
-        }
-
-        escribir();
-    }
-
-    window.onload = () => {
-    mostrarMensajeFinal();
-};
+.carta::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.4);
+    border-radius: 10px;
+}
 
 
-</script>
-
-</body>
-</html>
+#mensaje {
+    color: white;
+    font-size: 22px;
+    line-height: 1.7;
+    text-align: center;
+    white-space: pre-line;
+    font-family: 'Arial', sans-serif;
+}
