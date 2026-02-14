@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Fondo Videos</title>
+<link rel="stylesheet" href="CSS/si.css">
+</head>
+
+<body>
+
+<video id="videoFondo" autoplay muted></video>
+
+<div class="contenido">
+    <div class="carta">
+        <div id="mensaje"></div>
+    </div>
+</div>
+
+
+
+<audio id="musica" autoplay loop>
+    <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+    const musica = document.getElementById("musica");
+
+    
+    musica.volume = 0;
+    musica.play();
+
+    let volumen = 0;
+    const fade = setInterval(() => {
+        if (volumen < 0.35) {
+            volumen += 0.01;
+            musica.volume = volumen;
+        } else {
+            clearInterval(fade);
+        }
+    }, 200);
+
+    window.addEventListener("click", () => {
+    musica.play();
+}, { once: true });
+
+
+    const video = document.getElementById("videoFondo");
+
+    // Lista automática
+    const totalVideos = 15;
+    let indice = 1;
+
+    function cargarVideo(numero) {
+        video.src = "video" + numero + ".mp4";
+        video.play();
+    }
+
+    // termina un video
+    video.addEventListener("ended", () => {
+        indice++;
+
+        if (indice > totalVideos) {
+            indice = 1; // vuelve al inicio
+        }
+
+        cargarVideo(indice);
+    });
+
+    // Cargar el primero al iniciar
+    cargarVideo(indice);
+
+
+    const mensaje = document.getElementById("mensaje");
+
+    function mostrarMensajeFinal() {
+
+        const texto = `
+    Muchas gracias por aceptar ser mi San Valentín.
+    Desde que llegaste a mi vida todo se volvió más vivo que nunca.
+    Aún recuerdo cuando empezamos a conocernos,
+    y cuánto tiempo ha pasado desde entonces.
+
+    Hemos vivido tantas cosas juntos
+    que ya no imagino una vida sin ti.
+    Estos años a tu lado han sido especiales,
+    y quiero seguir viviendo muchos más contigo.
+
+    Quiero estar a tu lado en persona,
+    vivir cada experiencia que el mundo nos regale,
+    experimentar todo contigo,
+    y construir un futuro juntos.
+
+    Desde la primera vez que te vi en cámara
+    abrazando tu peluche de estrella,
+    supe que eras alguien especial para mí.
+
+    Amo tu risa que me enamora,
+    tus sonidos que me hacen reír,
+    tus momentos de locura que tanto me encantan,
+    y cada detalle que te hace ser tú.
+
+    Sé que a veces dudas,
+    sé que a veces tienes miedo,
+    pero quiero que recuerdes
+    que siempre estaré contigo.
+
+    Nuestra vida siempre sera una lucha y siempre tendremos problema,
+    habrá obstáculos y momentos difíciles,
+    pero juntos veremos las cosas desde otro ángulo,
+    y seguiremos avanzando.
+
+    Porque encontraremos nuestro camino,
+    porque construiremos nuestro futuro,
+    y porque todo lo que necesitamos
+    es avanzar… juntos ❤️. 
+
+        `;
+
+        let i = 0;
+        const velocidad = 50;
+
+        mensaje.innerHTML = ""; // limpia antes de escribir
+
+        function escribir() {
+            if (i < texto.length) {
+                mensaje.innerHTML += texto.charAt(i);
+                i++;
+                setTimeout(escribir, velocidad);
+            }
+        }
+
+        escribir();
+    }
+
+    window.onload = () => {
+    mostrarMensajeFinal();
+};
+
+
+</script>
+
+</body>
+</html>

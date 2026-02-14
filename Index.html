@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>¿Quieres ser mi San Valentín?</title>
+    <link rel="stylesheet" href="CSS/Index.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>💚 ¿¿¿¿Quieres ser mi San Valentín Alicia???? 💚</h1>
+    <button class="yes" onclick="aceptar()">Sí 💚</button>
+    <button class="no" onmouseover="mover(this)" onclick="irANo()">No 😢
+    </button>
+
+</div>
+
+<script>
+
+
+    let puedeMover = true;
+
+    // Después de 5 segundos deja de moverse
+    setTimeout(() => {
+        puedeMover = false;
+    }, 5000);
+
+    function mover(boton) {
+        if (puedeMover) {
+            boton.style.position = "absolute";
+            boton.style.top = Math.random() * (window.innerHeight - 50) + "px";
+            boton.style.left = Math.random() * (window.innerWidth - 100) + "px";
+        }
+    }
+
+    function irANo() {
+        if (!puedeMover) {
+            window.location.href = "no.html";
+        }
+    }
+
+    function aceptar(){
+        window.location.href = "si.html";
+    }
+
+
+</script>
+
+</body>
+</html>
