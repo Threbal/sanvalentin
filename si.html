@@ -8,7 +8,9 @@
 
 <body>
 
-<video id="videoFondo" autoplay muted></video>
+<video id="videoA" class="videoFondo" autoplay muted></video>
+<video id="videoB" class="videoFondo" muted></video>
+
 
 <div class="contenido">
     <div class="carta">
@@ -45,30 +47,47 @@
 }, { once: true });
 
 
-    const video = document.getElementById("videoFondo");
-
-    // Lista automática
     const totalVideos = 15;
     let indice = 1;
 
-    function cargarVideo(numero) {
+    const videoA = document.getElementById("videoA");
+    const videoB = document.getElementById("videoB");
+
+    let activo = videoA;
+    let oculto = videoB;
+
+    function cargarVideo(video, numero) {
         video.src = "video" + numero + ".mp4";
-        video.play();
+        video.load();
     }
 
-    // termina un video
-    video.addEventListener("ended", () => {
+    function cambiarVideo() {
         indice++;
-
         if (indice > totalVideos) {
-            indice = 1; // vuelve al inicio
+            indice = 1;
         }
 
-        cargarVideo(indice);
-    });
+        cargarVideo(oculto, indice);
 
-    // Cargar el primero al iniciar
-    cargarVideo(indice);
+        oculto.onloadeddata = () => {
+            oculto.play();
+
+            oculto.style.opacity = 1;
+            activo.style.opacity = 0;
+
+            let temp = activo;
+            activo = oculto;
+            oculto = temp;
+
+            activo.onended = cambiarVideo;
+        };
+    }
+
+    // iniciar
+    cargarVideo(activo, indice);
+    activo.play();
+    activo.onended = cambiarVideo;
+
 
 
     const mensaje = document.getElementById("mensaje");
